@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Planet;
+use App\Http\Requests\PlanetRequest;
 
 class PlanetController extends Controller
 {
@@ -34,9 +35,18 @@ class PlanetController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PlanetRequest $request)
     {
-        //
+        $planet = new Planet;
+
+        $planet->janame = $request->janame;
+        $planet->enname = $request->enname;
+        $planet->radius = $request->radius;
+        $planet->weight = $request->weight;
+
+        $planet->save();
+
+        return redirect('/planets');
     }
 
     /**
@@ -59,7 +69,8 @@ class PlanetController extends Controller
      */
     public function edit($id)
     {
-        //
+        $planet = Planet::find($id);
+        return view('planets.edit', compact('planet'));
     }
 
     /**
@@ -69,9 +80,18 @@ class PlanetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PlanetRequest $request, $id)
     {
-        //
+        $planet = Planet::find($id);
+
+        $planet->janame = $request->janame;
+        $planet->enname = $request->enname;
+        $planet->radius = $request->radius;
+        $planet->weight = $request->weight;
+
+        $planet->save();
+
+        return redirect('/planets');
     }
 
     /**
@@ -82,6 +102,9 @@ class PlanetController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $planet = Planet::find($id);
+        $planet->delete();
+
+        return redirect('/planets');
     }
 }
